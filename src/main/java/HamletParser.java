@@ -1,6 +1,8 @@
-import java.io.File;
-import java.io.IOException;
+
+import java.io.*;
 import java.util.Scanner;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Created by thook on 10/7/15.
@@ -36,4 +38,21 @@ public class HamletParser {
         return hamletData;
     }
 
+    public boolean changeTheHam(String oldName, String newName) {
+        Pattern pattern = Pattern.compile("(\\b("+oldName+"))", Pattern.CASE_INSENSITIVE);
+        Matcher matcher = pattern.matcher(hamletData);
+        boolean matchFound = matcher.find();
+        try {
+            PrintWriter fileInputStream = new PrintWriter("NOTHAMLET.txt");
+            if (matchFound) {
+                hamletData = matcher.replaceAll(" "+newName+" ");
+                fileInputStream.println(hamletData);
+                return true;
+            }
+            return false;
+        } catch (FileNotFoundException e){
+            return false;
+        }
+
+    }
 }
